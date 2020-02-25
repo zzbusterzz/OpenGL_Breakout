@@ -149,6 +149,7 @@
     <ClCompile Include="Source\glad.c" />
     <ClCompile Include="Source\main.cpp" />
     <ClCompile Include="Source\Shader.cpp" />
+    <ClCompile Include="SpriteRenderer.cpp" />
     <ClCompile Include="Texture.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -160,9 +161,11 @@
     <ClInclude Include="Resource_manager.h" />
     <ClInclude Include="Source\main.h" />
     <ClInclude Include="Source\Shader.h" />
+    <ClInclude Include="SpriteRenderer.h" />
     <ClInclude Include="Texture.h" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="Resources\awesomeface.png" />
     <Image Include="Resources\container.jpg" />
     <Image Include="Resources\wall.jpg" />
   </ItemGroup>
@@ -170,6 +173,8 @@
     <None Include="Shaders\FS1.fs" />
     <None Include="Shaders\FS2.fs" />
     <None Include="Shaders\FS3.fs" />
+    <None Include="Shaders\sprite.fs" />
+    <None Include="Shaders\sprite.vs" />
     <None Include="Shaders\VS1.vs" />
     <None Include="Shaders\VS2.vs" />
     <None Include="Shaders\VS3.vs" />

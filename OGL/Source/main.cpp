@@ -57,7 +57,7 @@ int main()
 
         //deltaTime = 0.001f;
         // Manage user input
-        PathFinder.ProcessInput(deltaTime);
+         PathFinder.ProcessInput(deltaTime);
 
         // Update Game state
         PathFinder.Update(deltaTime);

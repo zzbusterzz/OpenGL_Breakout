@@ -1,5 +1,6 @@
 #pragma once
 #include <glad\glad.h>
+#include "SpriteRenderer.h"
 
 enum GameState {
     GAME_ACTIVE,
@@ -23,5 +24,8 @@ class Game
         void ProcessInput(GLfloat dt);
         void Update(GLfloat dt);
         void Render();
+
+    private :
+        SpriteRenderer* Renderer;
 };
 

@@ -36,6 +36,9 @@
     <ClCompile Include="Resource_manager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="SpriteRenderer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\glad\glad.h">
@@ -65,12 +68,18 @@
     <ClInclude Include="Resource_manager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="SpriteRenderer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Resources\container.jpg">
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="Resources\wall.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Resources\awesomeface.png">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>
@@ -91,6 +100,12 @@
       <Filter>Shaders</Filter>
     </None>
     <None Include="Shaders\VS3.vs">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Shaders\sprite.fs">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Shaders\sprite.vs">
       <Filter>Shaders</Filter>
     </None>
   </ItemGroup>
