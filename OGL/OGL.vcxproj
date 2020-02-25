@@ -108,7 +108,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>glfw3.lib;opengl32.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>SOIL.lib;glfw3.lib;opengl32.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -144,19 +144,23 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Game.cpp" />
+    <ClCompile Include="Resource_manager.cpp" />
     <ClCompile Include="Source\glad.c" />
-    <ClCompile Include="Source\ImageReader.cpp" />
     <ClCompile Include="Source\main.cpp" />
     <ClCompile Include="Source\Shader.cpp" />
+    <ClCompile Include="Texture.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Game.h" />
     <ClInclude Include="Include\glad\glad.h" />
     <ClInclude Include="Include\GLFW\glfw3.h" />
     <ClInclude Include="Include\KHR\khrplatform.h" />
     <ClInclude Include="Include\stb_image.h" />
-    <ClInclude Include="Source\ImageReader.h" />
+    <ClInclude Include="Resource_manager.h" />
     <ClInclude Include="Source\main.h" />
     <ClInclude Include="Source\Shader.h" />
+    <ClInclude Include="Texture.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Resources\container.jpg" />

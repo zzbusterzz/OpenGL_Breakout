@@ -2,27 +2,36 @@
 #define SHADER_H
 
 #include <glad/glad.h> // include glad to get all the required OpenGL headers
+#include <glm/glm.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
 #include <string>
-#include <fstream>
-#include <sstream>
-#include <iostream>
+
+
 
 
 class Shader
 {
 public:
-    // the program ID
-    unsigned int ID;
+    // State
+    GLuint ID;
+    // Constructor
+    Shader() { }
 
-    // constructor reads and builds the shader
-    Shader(const char* vertexPath, const char* fragmentPath);
-    // use/activate the shader
-    void use();
-    // utility uniform functions
-    void setBool(const std::string& name, bool value) const;
-    void setInt(const std::string& name, int value) const;
-    void setFloat(const std::string& name, float value) const;
+   
+    Shader& Use();
+
+    void Compile(const GLchar* vertexSource, const GLchar* fragmentSource, const GLchar* geometrySource);
+    void SetFloat(const GLchar* name, GLfloat value, GLboolean useShader);
+    void SetInteger(const GLchar* name, GLint value, GLboolean useShader);
+    void SetVector2f(const GLchar* name, GLfloat x, GLfloat y, GLboolean useShader);
+    void SetVector2f(const GLchar* name, const glm::vec2& value, GLboolean useShader);
+    void SetVector3f(const GLchar* name, GLfloat x, GLfloat y, GLfloat z, GLboolean useShader);
+    void SetVector3f(const GLchar* name, const glm::vec3& value, GLboolean useShader);
+    void SetVector4f(const GLchar* name, GLfloat x, GLfloat y, GLfloat z, GLfloat w, GLboolean useShader);
+    void SetVector4f(const GLchar* name, const glm::vec4& value, GLboolean useShader);
+    void SetMatrix4(const GLchar* name, const glm::mat4& matrix, GLboolean useShader);
+    void checkCompileErrors(GLuint object, std::string type);
 };
 
 #endif

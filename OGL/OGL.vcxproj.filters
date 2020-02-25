@@ -21,13 +21,19 @@
     <ClCompile Include="Source\glad.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Source\ImageReader.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Source\main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Source\Shader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Game.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Texture.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Resource_manager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -44,13 +50,19 @@
     <ClInclude Include="Include\stb_image.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Source\ImageReader.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Source\main.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Source\Shader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Game.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Texture.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource_manager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
