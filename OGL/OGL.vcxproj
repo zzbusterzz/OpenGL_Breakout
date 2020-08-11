@@ -76,8 +76,8 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>C:\Users\KillerMech\source\repos\OGL\OGL\Include;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\Users\KillerMech\source\repos\OGL\OGL\Lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>D:\OGL\OGL\OGL\Include;$(IncludePath)</IncludePath>
+    <LibraryPath>D:\OGL\OGL\OGL\Lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
@@ -170,10 +170,16 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="Resources\awesomeface.png" />
+    <Image Include="Resources\bg.jpg" />
+    <Image Include="Resources\block.png" />
+    <Image Include="Resources\block_solid.png" />
     <Image Include="Resources\container.jpg" />
+    <Image Include="Resources\player.png" />
     <Image Include="Resources\wall.jpg" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\Levels\LevelOne" />
+    <None Include="Resources\Levels\LevelTwo" />
     <None Include="Shaders\FS1.fs" />
     <None Include="Shaders\FS2.fs" />
     <None Include="Shaders\FS3.fs" />

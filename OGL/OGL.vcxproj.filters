@@ -16,11 +16,11 @@
     <Filter Include="Shaders">
       <UniqueIdentifier>{cc1d03ae-61a8-4381-8ca7-04afb245cacd}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource Files\Levels">
+      <UniqueIdentifier>{d20a5a57-b010-43e1-8fec-b6bd0b1973d7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Source\glad.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Source\main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -43,6 +43,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="GameLevel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\glad.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -94,6 +97,18 @@
     <Image Include="Resources\awesomeface.png">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="Resources\bg.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Resources\block.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Resources\block_solid.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Resources\player.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <None Include="Shaders\FS1.fs">
@@ -119,6 +134,12 @@
     </None>
     <None Include="Shaders\sprite.vs">
       <Filter>Shaders</Filter>
+    </None>
+    <None Include="Resources\Levels\LevelOne">
+      <Filter>Resource Files\Levels</Filter>
+    </None>
+    <None Include="Resources\Levels\LevelTwo">
+      <Filter>Resource Files\Levels</Filter>
     </None>
   </ItemGroup>
 </Project>

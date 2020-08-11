@@ -1,6 +1,12 @@
-#pragma once
+#ifndef GAMELEVEL_H
+#define GAMELEVEL_H
+
 #include <vector>
+#include <glm/glm.hpp>
+
 #include "GameObject.h"
+#include "Resource_manager.h"
+#include "SpriteRenderer.h"
 
 class GameLevel
 {
@@ -18,3 +24,4 @@ class GameLevel
         // Initialize level from tile data
         void init(std::vector<std::vector<GLuint>> tileData, GLuint levelWidth, GLuint levelHeight);
 };
+#endif

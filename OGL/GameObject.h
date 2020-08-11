@@ -10,6 +10,7 @@ class GameObject
         glm::vec2   Position, Size, Velocity;
         glm::vec3   Color;
         GLfloat     Rotation;
+		GLfloat		Radius;
         GLboolean   IsSolid;
         GLboolean   Destroyed;
         // Render state
