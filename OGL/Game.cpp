@@ -95,17 +95,21 @@ void Game::Update(GLfloat dt)
 
 	Particles->Update(dt, *Ballobj, 2, glm::vec2(Ballobj->Radius / 2));
 
-	if (Ballobj->Position.y >= this->Height) // Did ball reach bottom edge?
-	{
-		this->ResetLevel();
-		this->ResetPlayer();
-	}
+	this->UpdatePowerUps(dt);
+
 
 	if (ShakeTime > 0.0f)
 	{
 		ShakeTime -= dt;
 		if (ShakeTime <= 0.0f)
 			Effects->Shake = false;
+	}
+
+
+	if (Ballobj->Position.y >= this->Height) // Did ball reach bottom edge?
+	{
+		this->ResetLevel();
+		this->ResetPlayer();
 	}
 
 }
