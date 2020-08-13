@@ -48,6 +48,12 @@
     <ClCompile Include="Source\glad.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="spriteAnim.fs">
+      <Filter>Shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="Ball.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\glad\glad.h">
@@ -84,6 +90,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="GameLevel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="spriteAnim.vs">
+      <Filter>Shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="Ball.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

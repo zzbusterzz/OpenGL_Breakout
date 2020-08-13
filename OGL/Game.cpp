@@ -30,13 +30,22 @@ void Game::Init()
     Renderer = new SpriteRenderer(ResourceManager::GetShader("sprite"));
 
 	// Load textures
+	ResourceManager::LoadTexture("Resources/paddle.png", true, "paddle");
 	ResourceManager::LoadTexture("Resources/bg.jpg", GL_FALSE, "background");
-	ResourceManager::LoadTexture("Resources/awesomeface.png", GL_TRUE, "face");
+	ResourceManager::LoadTexture("Resources/ball.png", GL_TRUE, "ball");
 	ResourceManager::LoadTexture("Resources/block.png", GL_FALSE, "block");
 	ResourceManager::LoadTexture("Resources/block_solid.png", GL_FALSE, "block_solid");
-	ResourceManager::LoadTexture("Resources/player.png", GL_TRUE, "player");
-	// Load levels
-	
+	ResourceManager::LoadTexture("Resources/paddle.png", GL_TRUE, "paddle");
+
+	glm::vec2 playerPos = glm::vec2(this->Width / 2 - PLAYER_SIZE.x / 2, this->Height - PLAYER_SIZE.y);
+	Player = new GameObject(playerPos, PLAYER_SIZE, ResourceManager::GetTexture("paddle"));
+	//Player->Radius = 25.0f;
+
+	glm::vec2 ballPos = playerPos + glm::vec2(PLAYER_SIZE.x / 2 - BALL_RADIUS, -BALL_RADIUS * 2);
+	Ballobj = new Ball(ballPos, BALL_RADIUS, INITIAL_BALL_VELOCITY, ResourceManager::GetTexture("ball"));
+
+
+	// Load levels	
 	GameLevel one; one.Load("Resources/Levels/LevelOne", this->Width, this->Height * 0.5);
 	GameLevel two; two.Load("Resources/Levels/LevelOne", this->Width, this->Height);
 	
@@ -44,13 +53,13 @@ void Game::Init()
 	this->Levels.push_back(two);
 	this->Level = 0;
 
-	glm::vec2 playerPos = glm::vec2(this->Width / 2 - PLAYER_SIZE.x / 2, this->Height - PLAYER_SIZE.y);
-	Player = new GameObject(playerPos, PLAYER_SIZE, ResourceManager::GetTexture("player"));
-	Player->Radius = 12.5f;
+	
 }
 
 void Game::Update(GLfloat dt)
 {
+	Ball->Move(dt, this->Width);
+
 	// Check for collisions
 	this->DoCollisions();
 }
@@ -154,10 +163,6 @@ Collision Game::CheckCollision(GameObject& one, GameObject& two) {//Circle - AAB
 		else
 			return std::make_tuple(GL_FALSE, UP, glm::vec2(0, 0));
 }
-	//return glm::length(difference) < one.Radius;
-//}
-
-
 
 
 void Game::ProcessInput(GLfloat dt)
