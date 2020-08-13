@@ -1,4 +1,9 @@
-#pragma once
+#ifndef GAMEOBJECT_H
+#define GAMEOBJECT_H
+
+#include <glad/glad.h>
+#include <glm/vec2.hpp>
+#include <glm/vec3.hpp>
 
 #include "texture.h"
 #include "SpriteRenderer.h"
@@ -22,3 +27,5 @@ class GameObject
         virtual void Draw(SpriteRenderer& renderer);
 };
 
+
+#endif

@@ -135,71 +135,28 @@ void Game::DoCollisions()
 				// Collision resolution
 				Direction dir = std::get<1>(collision);
 				glm::vec2 diff_vector = std::get<2>(collision);
-				if (dir == LEFT || dir == RIGHT) // Horizontal collision
+				if (!(Ballobj->PassThrough && !box.IsSolid)) // don't do collision resolution on non-solid bricks if pass-through activated
 				{
-					Ballobj->Velocity.x = -Ballobj->Velocity.x; // Reverse horizontal velocity
-						// Relocate
+					if (dir == LEFT || dir == RIGHT) // Horizontal collision
+					{
+						Ballobj->Velocity.x = -Ballobj->Velocity.x; // Reverse horizontal velocity
+							// Relocate
 						GLfloat penetration = Ballobj->Radius - std::abs(diff_vector.x);
-					if (dir == LEFT)
-						Ballobj->Position.x += penetration; // Move ball to right
-					else
-						Ballobj->Position.x -= penetration; // Move ball to left;
-				}
-				else // Vertical collision
-				{
-					Ballobj->Velocity.y = -Ballobj->Velocity.y; // Reverse vertical velocity
-						// Relocate
+						if (dir == LEFT)
+							Ballobj->Position.x += penetration; // Move ball to right
+						else
+							Ballobj->Position.x -= penetration; // Move ball to left;
+					}
+					else // Vertical collision
+					{
+						Ballobj->Velocity.y = -Ballobj->Velocity.y; // Reverse vertical velocity
+							// Relocate
 						GLfloat penetration = Ballobj->Radius - std::abs(diff_vector.y);
-					if (dir == UP)
-						Ballobj->Position.y -= penetration; // Move ball back up
-					else
-						Ballobj->Position.y += penetration; // Move ball back down
-				}
-			}
-
-			Collision result = CheckCollision(*Ballobj, *Player);
-			if (!Ballobj->Stuck && std::get<0>(result))
-			{
-				// Check where it hit the board, and change velocity based on where it hit the board
-					GLfloat centerBoard = Player->Position.x + Player->Size.x / 2;
-				GLfloat distance = (Ballobj->Position.x + Ballobj->Radius) - centerBoard;
-				GLfloat percentage = distance / (Player->Size.x / 2);
-				// Then move accordingly
-				GLfloat strength = 2.0f;
-				glm::vec2 oldVelocity = Ballobj->Velocity;
-				Ballobj->Velocity.x = INITIAL_BALL_VELOCITY.x * percentage * strength;
-				//Ballobj->Velocity.y = -Ballobj->Velocity.y;
-				Ballobj->Velocity.y = -1 * abs(Ballobj->Velocity.y);
-
-				Ballobj->Velocity = glm::normalize(Ballobj->Velocity) * glm::length( oldVelocity);
-
-				Ballobj->Stuck = Ballobj->Sticky;
-			}
-
-
-			Direction dir = std::get<1>(collision);
-			glm::vec2 diff_vector = std::get<2>(collision);
-			if (!(Ballobj->PassThrough && !box.IsSolid)) // don't do collision resolution on non-solid bricks if pass-through activated
-			{
-				if (dir == LEFT || dir == RIGHT) // Horizontal collision
-				{
-					Ballobj->Velocity.x = -Ballobj->Velocity.x; // Reverse horizontal velocity
-					// Relocate
-					GLfloat penetration = Ballobj->Radius - std::abs(diff_vector.x);
-					if (dir == LEFT)
-						Ballobj->Position.x += penetration; // Move ball to right
-					else
-						Ballobj->Position.x -= penetration; // Move ball to left;
-				}
-				else // Vertical collision
-				{
-					Ballobj->Velocity.y = -Ballobj->Velocity.y; // Reverse vertical velocity
-					// Relocate
-					GLfloat penetration = Ballobj->Radius - std::abs(diff_vector.y);
-					if (dir == UP)
-						Ballobj->Position.y -= penetration; // Move ball bback up
-					else
-						Ballobj->Position.y += penetration; // Move ball back down
+						if (dir == UP)
+							Ballobj->Position.y -= penetration; // Move ball back up
+						else
+							Ballobj->Position.y += penetration; // Move ball back down
+					}
 				}
 			}
 		}
@@ -219,49 +176,25 @@ void Game::DoCollisions()
 			}
 		}
 	}
-}
 
-void Game::ActivatePowerUp(Powerup& powerUp)
-{
-	if (powerUp.Type == "speed")
+	Collision result = CheckCollision(*Ballobj, *Player);
+	if (!Ballobj->Stuck && std::get<0>(result))
 	{
-		Ballobj->Velocity *= 1.2;
-	}
-	else if (powerUp.Type == "sticky")
-	{
-		Ballobj->Sticky = true;
-		Player->Color = glm::vec3(1.0f, 0.5f, 1.0f);
-	}
-	else if (powerUp.Type == "pass-through")
-	{
-		Ballobj->PassThrough = true;
-		Ballobj->Color = glm::vec3(1.0f, 0.5f, 0.5f);
-	}
-	else if (powerUp.Type == "pad-size-increase")
-	{
-		Player->Size.x += 50;
-	}
-	else if (powerUp.Type == "confuse")
-	{
-		if (!Effects->Chaos)
-			Effects->Confuse = true; // only activate if chaos wasn't already active
-	}
-	else if (powerUp.Type == "chaos")
-	{
-		if (!Effects->Confuse)
-			Effects->Chaos = true;
-	}
-}
+		// Check where it hit the board, and change velocity based on where it hit the board
+		GLfloat centerBoard = Player->Position.x + Player->Size.x / 2;
+		GLfloat distance = (Ballobj->Position.x + Ballobj->Radius) - centerBoard;
+		GLfloat percentage = distance / (Player->Size.x / 2);
+		// Then move accordingly
+		GLfloat strength = 2.0f;
+		glm::vec2 oldVelocity = Ballobj->Velocity;
+		Ballobj->Velocity.x = INITIAL_BALL_VELOCITY.x * percentage * strength;
+		//Ballobj->Velocity.y = -Ballobj->Velocity.y;
+		Ballobj->Velocity.y = -1 * abs(Ballobj->Velocity.y);
 
-bool Game::IsOtherPowerUpActive(std::vector<Powerup>& powerUps, std::string type)
-{
-	for (const Powerup& powerUp : powerUps)
-	{
-		if (powerUp.Activated)
-			if (powerUp.Type == type)
-				return true;
+		Ballobj->Velocity = glm::normalize(Ballobj->Velocity) * glm::length(oldVelocity);
+
+		Ballobj->Stuck = Ballobj->Sticky;
 	}
-	return false;
 }
 
 void Game::UpdatePowerUps(float dt)
@@ -314,6 +247,49 @@ void Game::UpdatePowerUps(float dt)
 	this->PowerUps.erase(std::remove_if(this->PowerUps.begin(), this->PowerUps.end(),
 		[](const Powerup& powerUp) { return powerUp.Destroyed && !powerUp.Activated; }
 	), this->PowerUps.end());
+}
+
+bool Game::IsOtherPowerUpActive(std::vector<Powerup>& powerUps, std::string type)
+{
+	for (const Powerup& powerUp : powerUps)
+	{
+		if (powerUp.Activated)
+			if (powerUp.Type == type)
+				return true;
+	}
+	return false;
+}
+
+void Game::ActivatePowerUp(Powerup& powerUp)
+{
+	if (powerUp.Type == "speed")
+	{
+		Ballobj->Velocity *= 1.2;
+	}
+	else if (powerUp.Type == "sticky")
+	{
+		Ballobj->Sticky = true;
+		Player->Color = glm::vec3(1.0f, 0.5f, 1.0f);
+	}
+	else if (powerUp.Type == "pass-through")
+	{
+		Ballobj->PassThrough = true;
+		Ballobj->Color = glm::vec3(1.0f, 0.5f, 0.5f);
+	}
+	else if (powerUp.Type == "pad-size-increase")
+	{
+		Player->Size.x += 50;
+	}
+	else if (powerUp.Type == "confuse")
+	{
+		if (!Effects->Chaos)
+			Effects->Confuse = true; // only activate if chaos wasn't already active
+	}
+	else if (powerUp.Type == "chaos")
+	{
+		if (!Effects->Confuse)
+			Effects->Chaos = true;
+	}
 }
 
 GLboolean Game::CheckCollisionAABB(GameObject& one, GameObject& two) // AABB - AABB collision
@@ -420,13 +396,12 @@ void Game::Render()
 		//one.Draw(*Renderer);
 
 		Player->Draw(*Renderer);
-		Particles->Draw();
 
 		for (Powerup& powerUp : this->PowerUps)
 			if (!powerUp.Destroyed)
 				powerUp.Draw(*Renderer);
 
-
+		Particles->Draw();
 		Ballobj->Draw(*Renderer);
 
 		Effects->EndRender();
