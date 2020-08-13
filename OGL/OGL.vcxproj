@@ -148,11 +148,12 @@
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameLevel.cpp" />
     <ClCompile Include="GameObject.cpp" />
+    <ClCompile Include="ParticleGenerator.cpp" />
+    <ClCompile Include="PostProcess.cpp" />
     <ClCompile Include="Resource_manager.cpp" />
     <ClCompile Include="Source\glad.c" />
     <ClCompile Include="Source\main.cpp" />
     <ClCompile Include="Source\Shader.cpp" />
-    <ClCompile Include="spriteAnim.fs" />
     <ClCompile Include="SpriteRenderer.cpp" />
     <ClCompile Include="Texture.cpp" />
   </ItemGroup>
@@ -165,10 +166,12 @@
     <ClInclude Include="Include\GLFW\glfw3.h" />
     <ClInclude Include="Include\KHR\khrplatform.h" />
     <ClInclude Include="Include\stb_image.h" />
+    <ClInclude Include="ParticleGenerator.h" />
+    <ClInclude Include="PostProcess.h" />
+    <ClInclude Include="Powerup.h" />
     <ClInclude Include="Resource_manager.h" />
     <ClInclude Include="Source\main.h" />
     <ClInclude Include="Source\Shader.h" />
-    <ClInclude Include="spriteAnim.vs" />
     <ClInclude Include="SpriteRenderer.h" />
     <ClInclude Include="Texture.h" />
   </ItemGroup>
@@ -182,11 +185,15 @@
     <Image Include="Resources\wall.jpg" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Particle.fs" />
+    <None Include="Particle.vs" />
     <None Include="Resources\Levels\LevelOne" />
     <None Include="Resources\Levels\LevelTwo" />
     <None Include="Shaders\FS1.fs" />
     <None Include="Shaders\FS2.fs" />
     <None Include="Shaders\FS3.fs" />
+    <None Include="Shaders\postprocessing.fs" />
+    <None Include="Shaders\postprocessing.vs" />
     <None Include="Shaders\sprite.fs" />
     <None Include="Shaders\sprite.vs" />
     <None Include="Shaders\VS1.vs" />

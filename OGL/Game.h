@@ -4,6 +4,7 @@
 #include "SpriteRenderer.h"
 #include "GameLevel.h"
 #include "Ball.h"
+#include "Powerup.h"
 
 enum GameState {
     GAME_ACTIVE,
@@ -22,7 +23,7 @@ const glm::vec2 PLAYER_SIZE(100, 20);
 
 const GLfloat PLAYER_VELOCITY(500.0f);
 
-GameObject* Player;
+
 
 typedef std::tuple<GLboolean, Direction, glm::vec2> Collision;
 
@@ -31,9 +32,6 @@ const glm::vec2 INITIAL_BALL_VELOCITY(100.0f, -350.0f);
 // Radius of the ball object
 const GLfloat BALL_RADIUS = 12.5f;
 
-Ball *Ballobj;
-
-
 class Game
 {
     public:
@@ -41,6 +39,10 @@ class Game
         GameState  State;
         GLboolean  Keys[1024];
         GLuint	   Width, Height;
+
+		GLuint Lives;
+
+		std::vector<Powerup>  PowerUps;
 
         // Constructor/Destructor
         Game(GLuint width, GLuint height);
@@ -52,10 +54,23 @@ class Game
         void Update(GLfloat dt);
         void Render();
 
+		void ResetLevel();
+
+		void ResetPlayer();
+
 		void DoCollisions();
 
-		Collision CheckCollision(GameObject &one, GameObject &two);
+		void ActivatePowerUp(Powerup& powerUp);
 
+		Collision CheckCollision(GameObject& one, GameObject& two);
+
+		GLboolean CheckCollisionAABB(GameObject& one, GameObject& two);
+
+		void SpawnPowerUps(GameObject& block);
+		
+		bool IsOtherPowerUpActive(std::vector<Powerup>& powerUps, std::string type);
+
+		void UpdatePowerUps(float dt);
 
     private :
 		std::vector<GameLevel> Levels;
