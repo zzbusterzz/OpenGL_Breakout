@@ -18,13 +18,14 @@ GLfloat ShakeTime = 0.0f;
 TextRenderer* Text;
 
 const int TotalLevels = 2;
+const int MAX_LIVES = 3;
 
 ISoundEngine* SoundEngine = createIrrKlangDevice();
 
 Game::Game(GLuint width, GLuint height)
 	: State(GAME_MENU), Keys(), Width(width), Height(height)
 {
-	this->Lives = 3;
+	this->Lives = 1;
 }
 
 Game::~Game()
@@ -66,7 +67,7 @@ void Game::Init()
 	ResourceManager::LoadTexture("Resources/Images/powerup_speed.png", GL_TRUE, "speed");
 	ResourceManager::LoadTexture("Resources/Images/powerup_sticky.png", GL_TRUE, "sticky");
 
-	ResourceManager::LoadTexture("Resources/Images/bg1.jpg", GL_FALSE, "background");
+	ResourceManager::LoadTexture("Resources/Images/bg.jpg", GL_FALSE, "background");
 	ResourceManager::LoadTexture("Resources/Images/ball.png", GL_TRUE, "ball");
 	ResourceManager::LoadTexture("Resources/Images/block.png", GL_FALSE, "block");
 	ResourceManager::LoadTexture("Resources/Images/block_solid.png", GL_FALSE, "block_solid");
@@ -74,7 +75,7 @@ void Game::Init()
 
 	ResourceManager::LoadTexture("Resources/Images/particle.png", GL_TRUE, "particle");
 
-	SoundEngine->play2D("Resources/Audio/bgmusic.mp3", GL_TRUE);
+	//SoundEngine->play2D("Resources/Audio/bgmusic.mp3", GL_TRUE);
 
 	Particles = new ParticleGenerator(ResourceManager::GetShader("particle"), ResourceManager::GetTexture("particle"), 500);
 	Effects = new PostProcess(ResourceManager::GetShader("postprocessing"), this->Width, this->Height);
@@ -133,8 +134,18 @@ void Game::Update(GLfloat dt)
 		if (this->Lives == 0)
 		{
 			this->ResetLevel();
-			this->State = GAME_MENU;
+			this->State = GAME_LOST;
+			SoundEngine->stopAllSounds();
+			SoundEngine->play2D("Resources/Audio/gamelost.mp3", GL_FALSE);
 		}
+		else {
+			SoundEngine->stopAllSounds();
+			SoundEngine->play2D("Resources/Audio/bgmusic.mp3", GL_TRUE);
+		}
+
+		for (Powerup& powerUp : this->PowerUps)
+			if (!powerUp.Destroyed)
+				powerUp.Destroyed = GL_TRUE;
 
 		this->ResetPlayer();
 	}
@@ -146,6 +157,9 @@ void Game::Update(GLfloat dt)
 		this->ResetPlayer();
 		Effects->Chaos = true;
 		this->State = GAME_WIN;
+
+		SoundEngine->stopAllSounds();
+		SoundEngine->play2D("Resources/Audio/gamewon.mp3", GL_TRUE);
 	}
 }
 
@@ -274,6 +288,9 @@ void Game::UpdatePowerUps(float dt)
 					if (!IsOtherPowerUpActive(this->PowerUps, "confuse"))
 					{	// only reset if no other PowerUp of type confuse is active
 						Effects->Confuse = false;
+
+						SoundEngine->stopAllSounds();
+						SoundEngine->play2D("Resources/Audio/bgmusic.mp3", GL_TRUE);
 					}
 				}
 				else if (powerUp.Type == "chaos")
@@ -281,6 +298,8 @@ void Game::UpdatePowerUps(float dt)
 					if (!IsOtherPowerUpActive(this->PowerUps, "chaos"))
 					{	// only reset if no other PowerUp of type chaos is active
 						Effects->Chaos = false;
+						SoundEngine->stopAllSounds();
+						SoundEngine->play2D("Resources/Audio/bgmusic.mp3", GL_TRUE);
 					}
 				}
 			}
@@ -442,6 +461,8 @@ void Game::ProcessInput(GLfloat dt)
 		{
 			this->State = GAME_ACTIVE;
 			this->KeysProcessed[GLFW_KEY_ENTER] = true;
+
+			SoundEngine->play2D("Resources/Audio/bgmusic.mp3", GL_TRUE);
 		}
 		if (this->Keys[GLFW_KEY_W] && !this->KeysProcessed[GLFW_KEY_W])
 		{
@@ -458,20 +479,20 @@ void Game::ProcessInput(GLfloat dt)
 		}
 	}
 
-	if (this->State == GAME_WIN)
+	if (this->State == GAME_WIN || this->State == GAME_LOST)
 	{
 		if (this->Keys[GLFW_KEY_ENTER])
 		{
 			this->KeysProcessed[GLFW_KEY_ENTER] = true;
 			Effects->Chaos = false;
 			this->State = GAME_MENU;
+			SoundEngine->stopAllSounds();
 		}
 	}
 }
 
 void Game::Render()
 {
-	
 	Effects->BeginRender();
 
 	// Draw background
@@ -507,10 +528,20 @@ void Game::Render()
 	if (this->State == GAME_WIN)
 	{
 		Text->RenderText(
-			"You WON!!!", 320.0, Height / 2 - 20.0, 1.0, glm::vec3(0.0, 1.0, 0.0)
+			"You WON!!!", Width / 2 - 70, Height / 2 - 0.0, 1.0, glm::vec3(0.0, 1.0, 0.0)
 		);
 		Text->RenderText(
-			"Press ENTER to retry or ESC to quit", 130.0, Height / 2, 1.0, glm::vec3(1.0, 1.0, 0.0)
+			"Press ENTER to retry or ESC to quit", Width / 2 - 230, Height / 2 + 30, 1.0, glm::vec3(0.0, 1.0, 0.0)
+		);
+	}
+
+	if (this->State == GAME_LOST)
+	{
+		Text->RenderText(
+			"You Died!!!", Width / 2 - 70, Height / 2 - 0.0, 1.0, glm::vec3(1.0, 0.0, 0.0)
+		);
+		Text->RenderText(
+			"Press ENTER to MainMenu or ESC to quit", Width / 2 - 230, Height / 2 + 30, 1.0, glm::vec3(1.0, 0.0, 0.0)
 		);
 	}
 }
@@ -521,10 +552,10 @@ void Game::ResetLevel()
 	else if (this->Level == 1)
 		this->Levels[1].Load("Resources/Levels/LevelTwo", this->Width, this->Height * 0.5f);
 
-	SoundEngine->stopAllSounds();
-	SoundEngine->play2D("Resources/Audio/bgmusic.mp3", GL_TRUE);
+	/*SoundEngine->stopAllSounds();
+	SoundEngine->play2D("Resources/Audio/bgmusic.mp3", GL_TRUE);*/
 
-	this->Lives = 3;
+	this->Lives = MAX_LIVES;
 }
 
 void Game::ResetPlayer()
@@ -539,8 +570,8 @@ void Game::ResetPlayer()
 	Player->Color = glm::vec3(1.0f);
 	Ballobj->Color = glm::vec3(1.0f);
 
-	SoundEngine->stopAllSounds();
-	SoundEngine->play2D("Resources/Audio/bgmusic.mp3", GL_TRUE);
+	//SoundEngine->stopAllSounds();
+	//SoundEngine->play2D("Resources/Audio/bgmusic.mp3", GL_TRUE);
 }
 
 
