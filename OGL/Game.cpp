@@ -101,12 +101,6 @@ void Game::Init()
 
 void Game::Update(GLfloat dt)
 {
-	//if (State == GAME_MENU)
-	//	printf("Game menu");
-	//else if (State == GAME_ACTIVE)
-	//	printf("Active");
-	//else
-	//	printf("Won");
 
 	Ballobj->Move(dt, this->Width);
 
@@ -244,9 +238,12 @@ void Game::DoCollisions()
 		glm::vec2 oldVelocity = Ballobj->Velocity;
 		Ballobj->Velocity.x = INITIAL_BALL_VELOCITY.x * percentage * strength;
 		//Ballobj->Velocity.y = -Ballobj->Velocity.y;
-		Ballobj->Velocity.y = -1 * abs(Ballobj->Velocity.y);
 
 		Ballobj->Velocity = glm::normalize(Ballobj->Velocity) * glm::length(oldVelocity);
+
+
+
+		Ballobj->Velocity.y = -1 * abs(Ballobj->Velocity.y);
 
 		Ballobj->Stuck = Ballobj->Sticky;
 
@@ -365,7 +362,7 @@ void Game::ActivatePowerUp(Powerup& powerUp)
 			SoundEngine->stopAllSounds();
 			SoundEngine->play2D("Resources/Audio/bgmusic1.mp3", GL_TRUE);
 		}
-			
+
 	}
 }
 
@@ -520,14 +517,14 @@ void Game::Render()
 	Effects->EndRender();
 	Effects->Render(glfwGetTime());
 
-	std::stringstream ss; 
+	std::stringstream ss;
 	ss << this->Lives;
 	Text->RenderText("Lives:" + ss.str(), 5.0f, 5.0f, 1.0f);
 
 	if (this->State == GAME_MENU)
 	{
-		Text->RenderText("Press ENTER to start", Width/2 - 105, Height / 2, 1.0f);
-		Text->RenderText("Press W or S to select level", Width/2 - 100, Height / 2 + 30.0f, 0.75f);
+		Text->RenderText("Press ENTER to start", Width / 2 - 105, Height / 2, 1.0f);
+		Text->RenderText("Press W or S to select level", Width / 2 - 100, Height / 2 + 30.0f, 0.75f);
 	}
 
 	if (this->State == GAME_WIN)
