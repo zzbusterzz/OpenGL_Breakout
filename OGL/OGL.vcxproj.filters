@@ -13,9 +13,6 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Shaders">
-      <UniqueIdentifier>{cc1d03ae-61a8-4381-8ca7-04afb245cacd}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Resource Files\Levels">
       <UniqueIdentifier>{d20a5a57-b010-43e1-8fec-b6bd0b1973d7}</UniqueIdentifier>
     </Filter>
@@ -24,6 +21,12 @@
     </Filter>
     <Filter Include="Resource Files\Images">
       <UniqueIdentifier>{02f14c22-111c-4dda-96d5-34fc66391d22}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Shaders">
+      <UniqueIdentifier>{cc1d03ae-61a8-4381-8ca7-04afb245cacd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Font">
+      <UniqueIdentifier>{5be632e4-b577-4cc9-aeb9-e0ef53bc2780}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -61,6 +64,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="PostProcess.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TextRenderer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -113,6 +119,9 @@
     <ClInclude Include="Powerup.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="TextRenderer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Levels\LevelOne">
@@ -122,22 +131,28 @@
       <Filter>Resource Files\Levels</Filter>
     </None>
     <None Include="Resources\Shaders\Particle.fs">
-      <Filter>Shaders</Filter>
+      <Filter>Resource Files\Shaders</Filter>
     </None>
     <None Include="Resources\Shaders\Particle.vs">
-      <Filter>Shaders</Filter>
+      <Filter>Resource Files\Shaders</Filter>
     </None>
     <None Include="Resources\Shaders\postprocessing.fs">
-      <Filter>Shaders</Filter>
+      <Filter>Resource Files\Shaders</Filter>
     </None>
     <None Include="Resources\Shaders\postprocessing.vs">
-      <Filter>Shaders</Filter>
+      <Filter>Resource Files\Shaders</Filter>
     </None>
     <None Include="Resources\Shaders\sprite.fs">
-      <Filter>Shaders</Filter>
+      <Filter>Resource Files\Shaders</Filter>
     </None>
     <None Include="Resources\Shaders\sprite.vs">
-      <Filter>Shaders</Filter>
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
+    <None Include="Resources\Shaders\text.fs">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
+    <None Include="Resources\Shaders\text.vs">
+      <Filter>Resource Files\Shaders</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -212,5 +227,10 @@
     <Image Include="Resources\Images\wall.jpg">
       <Filter>Resource Files\Images</Filter>
     </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <Font Include="Resources\Fonts\Ubuntu-R.ttf">
+      <Filter>Resource Files\Font</Filter>
+    </Font>
   </ItemGroup>
 </Project>

@@ -6,6 +6,8 @@
 #include "PostProcess.h"
 #include "Powerup.h"
 #include <algorithm>
+#include <TextRenderer.h>
+#include <sstream>
 
 GameObject* Player;
 Ball* Ballobj;
@@ -13,15 +15,16 @@ ParticleGenerator* Particles;
 PostProcess* Effects;
 
 GLfloat ShakeTime = 0.0f;
+TextRenderer* Text;
 
-
+const int TotalLevels = 2;
 
 ISoundEngine* SoundEngine = createIrrKlangDevice();
 
 Game::Game(GLuint width, GLuint height)
-	: State(GAME_ACTIVE), Keys(), Width(width), Height(height)
+	: State(GAME_MENU), Keys(), Width(width), Height(height)
 {
-
+	this->Lives = 3;
 }
 
 Game::~Game()
@@ -76,6 +79,8 @@ void Game::Init()
 	Particles = new ParticleGenerator(ResourceManager::GetShader("particle"), ResourceManager::GetTexture("particle"), 500);
 	Effects = new PostProcess(ResourceManager::GetShader("postprocessing"), this->Width, this->Height);
 
+	Text = new TextRenderer(this->Width, this->Height);
+	Text->Load("Resources/Fonts/Ubuntu-R.TTF", 24);
 
 	// Load levels	
 	GameLevel one; one.Load("Resources/Levels/LevelOne", this->Width, this->Height * 0.5);
@@ -94,6 +99,13 @@ void Game::Init()
 
 void Game::Update(GLfloat dt)
 {
+	//if (State == GAME_MENU)
+	//	printf("Game menu");
+	//else if (State == GAME_ACTIVE)
+	//	printf("Active");
+	//else
+	//	printf("Won");
+
 	Ballobj->Move(dt, this->Width);
 
 
@@ -116,10 +128,25 @@ void Game::Update(GLfloat dt)
 
 	if (Ballobj->Position.y >= this->Height) // Did ball reach bottom edge?
 	{
-		this->ResetLevel();
+		--this->Lives;
+
+		if (this->Lives == 0)
+		{
+			this->ResetLevel();
+			this->State = GAME_MENU;
+		}
+
 		this->ResetPlayer();
 	}
 
+
+	if (this->State == GAME_ACTIVE && this->Levels[this->Level].IsCompleted())
+	{
+		this->ResetLevel();
+		this->ResetPlayer();
+		Effects->Chaos = true;
+		this->State = GAME_WIN;
+	}
 }
 
 void Game::DoCollisions()
@@ -408,35 +435,84 @@ void Game::ProcessInput(GLfloat dt)
 		if (this->Keys[GLFW_KEY_SPACE])
 			Ballobj->Stuck = false;
 	}
+
+	if (this->State == GAME_MENU)
+	{
+		if (this->Keys[GLFW_KEY_ENTER] && !this->KeysProcessed[GLFW_KEY_ENTER])
+		{
+			this->State = GAME_ACTIVE;
+			this->KeysProcessed[GLFW_KEY_ENTER] = true;
+		}
+		if (this->Keys[GLFW_KEY_W] && !this->KeysProcessed[GLFW_KEY_W])
+		{
+			this->Level = (this->Level + 1) % TotalLevels;
+			this->KeysProcessed[GLFW_KEY_W] = true;
+		}
+		if (this->Keys[GLFW_KEY_S] && !this->KeysProcessed[GLFW_KEY_S])
+		{
+			if (this->Level > 0)
+				--this->Level;
+			else
+				this->Level = TotalLevels - 1;
+			this->KeysProcessed[GLFW_KEY_S] = true;
+		}
+	}
+
+	if (this->State == GAME_WIN)
+	{
+		if (this->Keys[GLFW_KEY_ENTER])
+		{
+			this->KeysProcessed[GLFW_KEY_ENTER] = true;
+			Effects->Chaos = false;
+			this->State = GAME_MENU;
+		}
+	}
 }
 
 void Game::Render()
 {
-	if (this->State == GAME_ACTIVE)
+	
+	Effects->BeginRender();
+
+	// Draw background
+	Renderer->DrawSprite(ResourceManager::GetTexture("background"),
+		glm::vec2(0, 0), glm::vec2(this->Width, this->Height), 0.0f
+	);
+	// Draw level
+	this->Levels[this->Level].Draw(*Renderer);
+	//one.Draw(*Renderer);
+
+	Player->Draw(*Renderer);
+
+	for (Powerup& powerUp : this->PowerUps)
+		if (!powerUp.Destroyed)
+			powerUp.Draw(*Renderer);
+
+	Particles->Draw();
+	Ballobj->Draw(*Renderer);
+
+	Effects->EndRender();
+	Effects->Render(glfwGetTime());
+
+	std::stringstream ss; 
+	ss << this->Lives;
+	Text->RenderText("Lives:" + ss.str(), 5.0f, 5.0f, 1.0f);
+
+	if (this->State == GAME_MENU)
 	{
-		Effects->BeginRender();
-
-		// Draw background
-		Renderer->DrawSprite(ResourceManager::GetTexture("background"),
-			glm::vec2(0, 0), glm::vec2(this->Width, this->Height), 0.0f
-		);
-		// Draw level
-		this->Levels[this->Level].Draw(*Renderer);
-		//one.Draw(*Renderer);
-
-		Player->Draw(*Renderer);
-
-		for (Powerup& powerUp : this->PowerUps)
-			if (!powerUp.Destroyed)
-				powerUp.Draw(*Renderer);
-
-		Particles->Draw();
-		Ballobj->Draw(*Renderer);
-
-		Effects->EndRender();
-		Effects->Render(glfwGetTime());
+		Text->RenderText("Press ENTER to start", Width/2 - 105, Height / 2, 1.0f);
+		Text->RenderText("Press W or S to select level", Width/2 - 100, Height / 2 + 30.0f, 0.75f);
 	}
 
+	if (this->State == GAME_WIN)
+	{
+		Text->RenderText(
+			"You WON!!!", 320.0, Height / 2 - 20.0, 1.0, glm::vec3(0.0, 1.0, 0.0)
+		);
+		Text->RenderText(
+			"Press ENTER to retry or ESC to quit", 130.0, Height / 2, 1.0, glm::vec3(1.0, 1.0, 0.0)
+		);
+	}
 }
 
 void Game::ResetLevel()

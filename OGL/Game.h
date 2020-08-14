@@ -42,7 +42,9 @@ class Game
         // Game state
         GameState  State;
         GLboolean  Keys[1024];
+		
         GLuint	   Width, Height;
+		bool KeysProcessed[1024];
 
 		GLuint Lives;
 
@@ -77,6 +79,7 @@ class Game
 		bool IsOtherPowerUpActive(std::vector<Powerup>& powerUps, std::string type);
 
 		void UpdatePowerUps(float dt);
+		
 
     private :
 		std::vector<GameLevel> Levels;

@@ -157,6 +157,7 @@
     <ClCompile Include="Source\main.cpp" />
     <ClCompile Include="Source\Shader.cpp" />
     <ClCompile Include="SpriteRenderer.cpp" />
+    <ClCompile Include="TextRenderer.cpp" />
     <ClCompile Include="Texture.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -175,6 +176,7 @@
     <ClInclude Include="Source\main.h" />
     <ClInclude Include="Source\Shader.h" />
     <ClInclude Include="SpriteRenderer.h" />
+    <ClInclude Include="TextRenderer.h" />
     <ClInclude Include="Texture.h" />
   </ItemGroup>
   <ItemGroup>
@@ -186,6 +188,8 @@
     <None Include="Resources\Shaders\postprocessing.vs" />
     <None Include="Resources\Shaders\sprite.fs" />
     <None Include="Resources\Shaders\sprite.vs" />
+    <None Include="Resources\Shaders\text.fs" />
+    <None Include="Resources\Shaders\text.vs" />
   </ItemGroup>
   <ItemGroup>
     <Media Include="Audio\bgmusic.mp3" />
@@ -213,6 +217,9 @@
     <Image Include="Resources\Images\powerup_speed.png" />
     <Image Include="Resources\Images\powerup_sticky.png" />
     <Image Include="Resources\Images\wall.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Font Include="Resources\Fonts\Ubuntu-R.ttf" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
