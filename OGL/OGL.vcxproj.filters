@@ -19,6 +19,9 @@
     <Filter Include="Resource Files\Levels">
       <UniqueIdentifier>{d20a5a57-b010-43e1-8fec-b6bd0b1973d7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource Files\Audio">
+      <UniqueIdentifier>{6f74c7bf-2ecf-4e75-aadb-6615239ad617}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\main.cpp">

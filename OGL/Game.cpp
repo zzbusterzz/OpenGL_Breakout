@@ -14,39 +14,48 @@ PostProcess* Effects;
 
 GLfloat ShakeTime = 0.0f;
 
+
+
+ISoundEngine* SoundEngine = createIrrKlangDevice();
+
 Game::Game(GLuint width, GLuint height)
-    : State(GAME_ACTIVE), Keys(), Width(width), Height(height)
+	: State(GAME_ACTIVE), Keys(), Width(width), Height(height)
 {
 
 }
 
 Game::~Game()
 {
-
+	delete Renderer;
+	delete Player;
+	delete Ballobj;
+	delete Particles;
+	delete Effects;
+	SoundEngine->drop();
 }
 
 
 
 void Game::Init()
 {
-    // Load shaders
-    ResourceManager::LoadShader("Shaders/sprite.vs", "Shaders/sprite.fs", nullptr, "sprite");
+	// Load shaders
+	ResourceManager::LoadShader("Shaders/sprite.vs", "Shaders/sprite.fs", nullptr, "sprite");
 	ResourceManager::LoadShader("Shaders/Particle.vs", "Shaders/Particle.fs", nullptr, "particle");
 	ResourceManager::LoadShader("Shaders/postprocessing.vs", "Shaders/postprocessing.fs", nullptr, "postprocessing");
 
-    // Configure shaders
-    glm::mat4 projection = glm::ortho(0.0f, static_cast<GLfloat>(this->Width), static_cast<GLfloat>(this->Height), 0.0f, -1.0f, 1.0f);
-    ResourceManager::GetShader("sprite")->Use().SetInteger("image", 0);
-    ResourceManager::GetShader("sprite")->SetMatrix4("projection", projection);
-   
+	// Configure shaders
+	glm::mat4 projection = glm::ortho(0.0f, static_cast<GLfloat>(this->Width), static_cast<GLfloat>(this->Height), 0.0f, -1.0f, 1.0f);
+	ResourceManager::GetShader("sprite")->Use().SetInteger("image", 0);
+	ResourceManager::GetShader("sprite")->SetMatrix4("projection", projection);
+
 	ResourceManager::GetShader("particle")->Use().SetInteger("sprite", 0);
 	ResourceManager::GetShader("particle")->SetMatrix4("projection", projection);
 
-    // Set render-specific controls
-    Renderer = new SpriteRenderer(ResourceManager::GetShader("sprite"));
+	// Set render-specific controls
+	Renderer = new SpriteRenderer(ResourceManager::GetShader("sprite"));
 
 	// Load textures
-	
+
 	ResourceManager::LoadTexture("Resources/powerup_chaos.jpg", GL_FALSE, "chaos");
 	ResourceManager::LoadTexture("Resources/powerup_confuse.png", GL_TRUE, "confuse");
 	ResourceManager::LoadTexture("Resources/powerup_increase.png", GL_FALSE, "increase");
@@ -61,24 +70,23 @@ void Game::Init()
 	ResourceManager::LoadTexture("Resources/paddle.png", GL_TRUE, "paddle");
 
 	ResourceManager::LoadTexture("Resources/particle.png", GL_TRUE, "particle");
-	
+
+	SoundEngine->play2D("Audio/bgmusic.mp3", GL_TRUE);
+
 	Particles = new ParticleGenerator(ResourceManager::GetShader("particle"), ResourceManager::GetTexture("particle"), 500);
 	Effects = new PostProcess(ResourceManager::GetShader("postprocessing"), this->Width, this->Height);
 
 
-
-
 	// Load levels	
 	GameLevel one; one.Load("Resources/Levels/LevelOne", this->Width, this->Height * 0.5);
-	GameLevel two; two.Load("Resources/Levels/LevelOne", this->Width, this->Height);
-	
+	GameLevel two; two.Load("Resources/Levels/LevelTwo", this->Width, this->Height * 0.5);
+
 	this->Levels.push_back(one);
 	this->Levels.push_back(two);
 	this->Level = 0;
 
 	glm::vec2 playerPos = glm::vec2(this->Width / 2 - PLAYER_SIZE.x / 2, this->Height - PLAYER_SIZE.y);
 	Player = new GameObject(playerPos, PLAYER_SIZE, ResourceManager::GetTexture("paddle"));
-	//Player->Radius = 25.0f;
 
 	glm::vec2 ballPos = playerPos + glm::vec2(PLAYER_SIZE.x / 2 - BALL_RADIUS, -BALL_RADIUS * 2);
 	Ballobj = new Ball(ballPos, BALL_RADIUS, INITIAL_BALL_VELOCITY, ResourceManager::GetTexture("ball"));
@@ -87,7 +95,7 @@ void Game::Init()
 void Game::Update(GLfloat dt)
 {
 	Ballobj->Move(dt, this->Width);
-	
+
 
 	// Check for collisions
 	this->DoCollisions();
@@ -114,8 +122,6 @@ void Game::Update(GLfloat dt)
 
 }
 
-Direction VectorDirection(glm::vec2 closest);
-
 void Game::DoCollisions()
 {
 	for (GameObject& box : this->Levels[this->Level].Bricks)
@@ -129,11 +135,14 @@ void Game::DoCollisions()
 				if (!box.IsSolid) {
 					box.Destroyed = GL_TRUE;
 					this->SpawnPowerUps(box);
-				}	
+					SoundEngine->play2D("Audio/bleep.mp3", false);
+				}
 				else
 				{ // if block is solid, enable shake effect
 					ShakeTime = 0.05f;
 					Effects->Shake = true;
+
+					SoundEngine->play2D("Audio/solidbounce.mp3", false);
 				}
 
 				// Collision resolution
@@ -198,6 +207,8 @@ void Game::DoCollisions()
 		Ballobj->Velocity = glm::normalize(Ballobj->Velocity) * glm::length(oldVelocity);
 
 		Ballobj->Stuck = Ballobj->Sticky;
+
+		SoundEngine->play2D("audio/paddlejump.mp3", false);
 	}
 }
 
@@ -269,32 +280,42 @@ void Game::ActivatePowerUp(Powerup& powerUp)
 	if (powerUp.Type == "speed")
 	{
 		Ballobj->Velocity *= 1.2;
+		SoundEngine->play2D("audio/power4.mp3", false);
 	}
 	else if (powerUp.Type == "sticky")
 	{
 		Ballobj->Sticky = true;
 		Player->Color = glm::vec3(1.0f, 0.5f, 1.0f);
+		SoundEngine->play2D("audio/power3.mp3", false);
 	}
 	else if (powerUp.Type == "pass-through")
 	{
 		Ballobj->PassThrough = true;
 		Ballobj->Color = glm::vec3(1.0f, 0.5f, 0.5f);
+		SoundEngine->play2D("audio/power1.mp3", false);
 	}
 	else if (powerUp.Type == "pad-size-increase")
 	{
 		Player->Size.x += 50;
+		SoundEngine->play2D("audio/power2.mp3", false);
 	}
 	else if (powerUp.Type == "confuse")
 	{
-		if (!Effects->Chaos)
+		if (!Effects->Chaos) {
 			Effects->Confuse = true; // only activate if chaos wasn't already active
+			SoundEngine->play2D("audio/power5.mp3", false);
+		}
 	}
 	else if (powerUp.Type == "chaos")
 	{
-		if (!Effects->Confuse)
+		if (!Effects->Confuse) {
 			Effects->Chaos = true;
+			SoundEngine->play2D("audio/power6.mp3", false);
+		}
+			
 	}
 }
+
 
 GLboolean Game::CheckCollisionAABB(GameObject& one, GameObject& two) // AABB - AABB collision
 {
@@ -332,7 +353,7 @@ Collision Game::CheckCollision(GameObject& one, GameObject& two) {//Circle - AAB
 		return std::make_tuple(GL_FALSE, UP, glm::vec2(0, 0));
 }
 
-Direction VectorDirection(glm::vec2 target)
+Direction Game::VectorDirection(glm::vec2 target)
 {
 	glm::vec2 compass[] = {
 	glm::vec2(0.0f, 1.0f), // up
@@ -353,8 +374,6 @@ Direction VectorDirection(glm::vec2 target)
 	}
 	return (Direction)best_match;
 }
-
-
 
 void Game::ProcessInput(GLfloat dt)
 {
@@ -411,18 +430,14 @@ void Game::Render()
 		Effects->EndRender();
 		Effects->Render(glfwGetTime());
 	}
-  
+
 }
 
 void Game::ResetLevel()
 {
-	if (this->Level == 0)this->Levels[0].Load("res/levels/one.lvl", this->Width, this->Height * 0.5f);
+	if (this->Level == 0)this->Levels[0].Load("Resources/Levels/LevelOne", this->Width, this->Height * 0.5f);
 	else if (this->Level == 1)
-		this->Levels[1].Load("res/levels/two.lvl", this->Width, this->Height * 0.5f);
-	else if (this->Level == 2)
-		this->Levels[2].Load("res/levels/three.lvl", this->Width, this->Height * 0.5f);
-	else if (this->Level == 3)
-		this->Levels[3].Load("res/levels/four.lvl", this->Width, this->Height * 0.5f);
+		this->Levels[1].Load("Resources/Levels/LevelTwo", this->Width, this->Height * 0.5f);	
 
 	this->Lives = 3;
 }
@@ -432,9 +447,9 @@ void Game::ResetPlayer()
 	// Reset player/ball stats
 	Player->Size = PLAYER_SIZE;
 	Player->Position = glm::vec2(this->Width / 2 - PLAYER_SIZE.x / 2, this->Height - PLAYER_SIZE.y);
-	//Ballobj->Reset(Player->Position + glm::vec2(PLAYER_SIZE.x / 2 - BALL_RADIUS, -(BALL_RADIUS * 2)), INITIAL_BALL_VELOCITY);
+	Ballobj->Reset(Player->Position + glm::vec2(PLAYER_SIZE.x / 2 - BALL_RADIUS, -(BALL_RADIUS * 2)), INITIAL_BALL_VELOCITY);
 	// Also disable all active powerups
-	//Effects->Chaos = Effects->Confuse = GL_FALSE;
+	Effects->Chaos = Effects->Confuse = GL_FALSE;
 	Ballobj->PassThrough = Ballobj->Sticky = GL_FALSE;
 	Player->Color = glm::vec3(1.0f);
 	Ballobj->Color = glm::vec3(1.0f);
@@ -457,13 +472,13 @@ void Game::SpawnPowerUps(GameObject& block)
 			Powerup("sticky", glm::vec3(1.0f, 0.5f, 1.0f), 20.0f, block.Position, ResourceManager::GetTexture("sticky")));
 	if (ShouldSpawn(75))
 		this->PowerUps.push_back(
-			Powerup("pass-through", glm::vec3(0.5f, 1.0f, 0.5f), 10.0f, block.Position, ResourceManager::GetTexture("passthrough")) );
+			Powerup("pass-through", glm::vec3(0.5f, 1.0f, 0.5f), 10.0f, block.Position, ResourceManager::GetTexture("passthrough")));
 	if (ShouldSpawn(75))
 		this->PowerUps.push_back(
-			Powerup("pad-size-increase", glm::vec3(1.0f, 0.6f, 0.4), 0.0f, block.Position, ResourceManager::GetTexture("increase") ));
+			Powerup("pad-size-increase", glm::vec3(1.0f, 0.6f, 0.4), 0.0f, block.Position, ResourceManager::GetTexture("increase")));
 	if (ShouldSpawn(15)) // negative powerups should spawn more often
 		this->PowerUps.push_back(
-			Powerup("confuse", glm::vec3(1.0f, 0.3f, 0.3f), 15.0f, block.Position, ResourceManager::GetTexture("confuse") ));
+			Powerup("confuse", glm::vec3(1.0f, 0.3f, 0.3f), 15.0f, block.Position, ResourceManager::GetTexture("confuse")));
 	if (ShouldSpawn(15))
 		this->PowerUps.push_back(
 			Powerup("chaos", glm::vec3(0.9f, 0.25f, 0.25f), 15.0f, block.Position, ResourceManager::GetTexture("chaos")));

@@ -6,6 +6,10 @@
 #include "Ball.h"
 #include "Powerup.h"
 
+#include<irrklang/irrKlang.h>
+#pragma comment(lib, "irrKlang.lib")
+using namespace irrklang;
+
 enum GameState {
     GAME_ACTIVE,
     GAME_MENU,
@@ -61,6 +65,8 @@ class Game
 		void DoCollisions();
 
 		void ActivatePowerUp(Powerup& powerUp);
+
+		Direction VectorDirection(glm::vec2 closest);
 
 		Collision CheckCollision(GameObject& one, GameObject& two);
 
