@@ -25,7 +25,7 @@ ISoundEngine* SoundEngine = createIrrKlangDevice();
 Game::Game(GLuint width, GLuint height)
 	: State(GAME_MENU), Keys(), Width(width), Height(height)
 {
-	this->Lives = 1;
+	this->Lives = MAX_LIVES;
 }
 
 Game::~Game()
@@ -35,6 +35,7 @@ Game::~Game()
 	delete Ballobj;
 	delete Particles;
 	delete Effects;
+	delete Text;
 	SoundEngine->drop();
 }
 
@@ -114,7 +115,7 @@ void Game::Update(GLfloat dt)
 	this->DoCollisions();
 
 
-	Particles->Update(dt, *Ballobj, 2, glm::vec2(Ballobj->Radius / 2));
+	Particles->Update(dt, *Ballobj, 2, glm::vec2(Ballobj->Radius / 2.0f));
 
 	this->UpdatePowerUps(dt);
 
@@ -509,7 +510,11 @@ void Game::Render()
 		if (!powerUp.Destroyed)
 			powerUp.Draw(*Renderer);
 
-	Particles->Draw();
+	if (this->State == GAME_ACTIVE)
+	{
+		Particles->Draw();
+	}
+
 	Ballobj->Draw(*Renderer);
 
 	Effects->EndRender();
