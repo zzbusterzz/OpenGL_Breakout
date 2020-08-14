@@ -22,6 +22,9 @@
     <Filter Include="Resource Files\Audio">
       <UniqueIdentifier>{6f74c7bf-2ecf-4e75-aadb-6615239ad617}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource Files\Images">
+      <UniqueIdentifier>{02f14c22-111c-4dda-96d5-34fc66391d22}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\main.cpp">
@@ -112,70 +115,102 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="Resources\container.jpg">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="Resources\wall.jpg">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="Resources\awesomeface.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="Resources\bg.jpg">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="Resources\block.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="Resources\block_solid.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="Resources\player.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Shaders\FS1.fs">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="Shaders\VS1.vs">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="Shaders\FS2.fs">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="Shaders\VS2.vs">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="Shaders\FS3.fs">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="Shaders\VS3.vs">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="Shaders\sprite.fs">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="Shaders\sprite.vs">
-      <Filter>Shaders</Filter>
-    </None>
     <None Include="Resources\Levels\LevelOne">
       <Filter>Resource Files\Levels</Filter>
     </None>
     <None Include="Resources\Levels\LevelTwo">
       <Filter>Resource Files\Levels</Filter>
     </None>
-    <None Include="Particle.fs">
+    <None Include="Resources\Shaders\Particle.fs">
       <Filter>Shaders</Filter>
     </None>
-    <None Include="Particle.vs">
+    <None Include="Resources\Shaders\Particle.vs">
       <Filter>Shaders</Filter>
     </None>
-    <None Include="Shaders\postprocessing.fs">
+    <None Include="Resources\Shaders\postprocessing.fs">
       <Filter>Shaders</Filter>
     </None>
-    <None Include="Shaders\postprocessing.vs">
+    <None Include="Resources\Shaders\postprocessing.vs">
       <Filter>Shaders</Filter>
     </None>
+    <None Include="Resources\Shaders\sprite.fs">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Resources\Shaders\sprite.vs">
+      <Filter>Shaders</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Media Include="Audio\bgmusic.mp3">
+      <Filter>Resource Files\Audio</Filter>
+    </Media>
+    <Media Include="Audio\bleep.mp3">
+      <Filter>Resource Files\Audio</Filter>
+    </Media>
+    <Media Include="Audio\paddlejump.mp3">
+      <Filter>Resource Files\Audio</Filter>
+    </Media>
+    <Media Include="Audio\power1.mp3">
+      <Filter>Resource Files\Audio</Filter>
+    </Media>
+    <Media Include="Audio\power2.mp3">
+      <Filter>Resource Files\Audio</Filter>
+    </Media>
+    <Media Include="Audio\power3.mp3">
+      <Filter>Resource Files\Audio</Filter>
+    </Media>
+    <Media Include="Audio\power4.mp3">
+      <Filter>Resource Files\Audio</Filter>
+    </Media>
+    <Media Include="Audio\power5.mp3">
+      <Filter>Resource Files\Audio</Filter>
+    </Media>
+    <Media Include="Audio\power6.mp3">
+      <Filter>Resource Files\Audio</Filter>
+    </Media>
+    <Media Include="Audio\solidbounce.mp3">
+      <Filter>Resource Files\Audio</Filter>
+    </Media>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Resources\Images\ball.png">
+      <Filter>Resource Files\Images</Filter>
+    </Image>
+    <Image Include="Resources\Images\bg.jpg">
+      <Filter>Resource Files\Images</Filter>
+    </Image>
+    <Image Include="Resources\Images\block.png">
+      <Filter>Resource Files\Images</Filter>
+    </Image>
+    <Image Include="Resources\Images\block_solid.png">
+      <Filter>Resource Files\Images</Filter>
+    </Image>
+    <Image Include="Resources\Images\paddle.png">
+      <Filter>Resource Files\Images</Filter>
+    </Image>
+    <Image Include="Resources\Images\particle.png">
+      <Filter>Resource Files\Images</Filter>
+    </Image>
+    <Image Include="Resources\Images\powerup_chaos.png">
+      <Filter>Resource Files\Images</Filter>
+    </Image>
+    <Image Include="Resources\Images\powerup_confuse.png">
+      <Filter>Resource Files\Images</Filter>
+    </Image>
+    <Image Include="Resources\Images\powerup_increase.png">
+      <Filter>Resource Files\Images</Filter>
+    </Image>
+    <Image Include="Resources\Images\powerup_passthrough.png">
+      <Filter>Resource Files\Images</Filter>
+    </Image>
+    <Image Include="Resources\Images\powerup_speed.png">
+      <Filter>Resource Files\Images</Filter>
+    </Image>
+    <Image Include="Resources\Images\powerup_sticky.png">
+      <Filter>Resource Files\Images</Filter>
+    </Image>
+    <Image Include="Resources\Images\wall.jpg">
+      <Filter>Resource Files\Images</Filter>
+    </Image>
   </ItemGroup>
 </Project>

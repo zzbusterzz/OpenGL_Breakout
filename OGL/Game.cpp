@@ -39,9 +39,9 @@ Game::~Game()
 void Game::Init()
 {
 	// Load shaders
-	ResourceManager::LoadShader("Shaders/sprite.vs", "Shaders/sprite.fs", nullptr, "sprite");
-	ResourceManager::LoadShader("Shaders/Particle.vs", "Shaders/Particle.fs", nullptr, "particle");
-	ResourceManager::LoadShader("Shaders/postprocessing.vs", "Shaders/postprocessing.fs", nullptr, "postprocessing");
+	ResourceManager::LoadShader("Resources/Shaders/sprite.vs", "Resources/Shaders/sprite.fs", nullptr, "sprite");
+	ResourceManager::LoadShader("Resources/Shaders/Particle.vs", "Resources/Shaders/Particle.fs", nullptr, "particle");
+	ResourceManager::LoadShader("Resources/Shaders/postprocessing.vs", "Resources/Shaders/postprocessing.fs", nullptr, "postprocessing");
 
 	// Configure shaders
 	glm::mat4 projection = glm::ortho(0.0f, static_cast<GLfloat>(this->Width), static_cast<GLfloat>(this->Height), 0.0f, -1.0f, 1.0f);
@@ -56,22 +56,22 @@ void Game::Init()
 
 	// Load textures
 
-	ResourceManager::LoadTexture("Resources/powerup_chaos.jpg", GL_FALSE, "chaos");
-	ResourceManager::LoadTexture("Resources/powerup_confuse.png", GL_TRUE, "confuse");
-	ResourceManager::LoadTexture("Resources/powerup_increase.png", GL_FALSE, "increase");
-	ResourceManager::LoadTexture("Resources/powerup_passthrough.jpg", GL_FALSE, "passthrough");
-	ResourceManager::LoadTexture("Resources/powerup_speed.png", GL_TRUE, "speed");
-	ResourceManager::LoadTexture("Resources/powerup_sticky.png", GL_TRUE, "sticky");
+	ResourceManager::LoadTexture("Resources/Images/powerup_chaos.jpg", GL_TRUE, "chaos");
+	ResourceManager::LoadTexture("Resources/Images/powerup_confuse.png", GL_TRUE, "confuse");
+	ResourceManager::LoadTexture("Resources/Images/powerup_increase.png", GL_TRUE, "increase");
+	ResourceManager::LoadTexture("Resources/Images/powerup_passthrough.png", GL_TRUE, "passthrough");
+	ResourceManager::LoadTexture("Resources/Images/powerup_speed.png", GL_TRUE, "speed");
+	ResourceManager::LoadTexture("Resources/Images/powerup_sticky.png", GL_TRUE, "sticky");
 
-	ResourceManager::LoadTexture("Resources/bg.jpg", GL_FALSE, "background");
-	ResourceManager::LoadTexture("Resources/ball.png", GL_TRUE, "ball");
-	ResourceManager::LoadTexture("Resources/block.png", GL_FALSE, "block");
-	ResourceManager::LoadTexture("Resources/block_solid.png", GL_FALSE, "block_solid");
-	ResourceManager::LoadTexture("Resources/paddle.png", GL_TRUE, "paddle");
+	ResourceManager::LoadTexture("Resources/Images/bg1.jpg", GL_FALSE, "background");
+	ResourceManager::LoadTexture("Resources/Images/ball.png", GL_TRUE, "ball");
+	ResourceManager::LoadTexture("Resources/Images/block.png", GL_FALSE, "block");
+	ResourceManager::LoadTexture("Resources/Images/block_solid.png", GL_FALSE, "block_solid");
+	ResourceManager::LoadTexture("Resources/Images/paddle.png", GL_TRUE, "paddle");
 
-	ResourceManager::LoadTexture("Resources/particle.png", GL_TRUE, "particle");
+	ResourceManager::LoadTexture("Resources/Images/particle.png", GL_TRUE, "particle");
 
-	SoundEngine->play2D("Audio/bgmusic.mp3", GL_TRUE);
+	SoundEngine->play2D("Resources/Audio/bgmusic.mp3", GL_TRUE);
 
 	Particles = new ParticleGenerator(ResourceManager::GetShader("particle"), ResourceManager::GetTexture("particle"), 500);
 	Effects = new PostProcess(ResourceManager::GetShader("postprocessing"), this->Width, this->Height);
@@ -135,14 +135,14 @@ void Game::DoCollisions()
 				if (!box.IsSolid) {
 					box.Destroyed = GL_TRUE;
 					this->SpawnPowerUps(box);
-					SoundEngine->play2D("Audio/bleep.mp3", false);
+					SoundEngine->play2D("Resources/Audio/bleep.mp3", false);
 				}
 				else
 				{ // if block is solid, enable shake effect
 					ShakeTime = 0.05f;
 					Effects->Shake = true;
 
-					SoundEngine->play2D("Audio/solidbounce.mp3", false);
+					SoundEngine->play2D("Resources/Audio/solidbounce.mp3", false);
 				}
 
 				// Collision resolution
@@ -208,7 +208,7 @@ void Game::DoCollisions()
 
 		Ballobj->Stuck = Ballobj->Sticky;
 
-		SoundEngine->play2D("audio/paddlejump.mp3", false);
+		SoundEngine->play2D("Resources/Audio/paddlejump.mp3", false);
 	}
 }
 
@@ -280,37 +280,43 @@ void Game::ActivatePowerUp(Powerup& powerUp)
 	if (powerUp.Type == "speed")
 	{
 		Ballobj->Velocity *= 1.2;
-		SoundEngine->play2D("audio/power4.mp3", false);
+		SoundEngine->play2D("Resources/Audio/power4.mp3", false);
 	}
 	else if (powerUp.Type == "sticky")
 	{
 		Ballobj->Sticky = true;
 		Player->Color = glm::vec3(1.0f, 0.5f, 1.0f);
-		SoundEngine->play2D("audio/power3.mp3", false);
+		SoundEngine->play2D("Resources/Audio/power3.mp3", false);
 	}
 	else if (powerUp.Type == "pass-through")
 	{
 		Ballobj->PassThrough = true;
 		Ballobj->Color = glm::vec3(1.0f, 0.5f, 0.5f);
-		SoundEngine->play2D("audio/power1.mp3", false);
+		SoundEngine->play2D("Resources/Audio/power1.mp3", false);
 	}
 	else if (powerUp.Type == "pad-size-increase")
 	{
 		Player->Size.x += 50;
-		SoundEngine->play2D("audio/power2.mp3", false);
+		SoundEngine->play2D("Resources/Audio/power2.mp3", false);
 	}
 	else if (powerUp.Type == "confuse")
 	{
 		if (!Effects->Chaos) {
 			Effects->Confuse = true; // only activate if chaos wasn't already active
-			SoundEngine->play2D("audio/power5.mp3", false);
+			SoundEngine->play2D("Resources/Audio/power5.mp3", false);
+
+			SoundEngine->stopAllSounds();
+			SoundEngine->play2D("Resources/Audio/bgmusic2.mp3", GL_TRUE);
 		}
 	}
 	else if (powerUp.Type == "chaos")
 	{
 		if (!Effects->Confuse) {
 			Effects->Chaos = true;
-			SoundEngine->play2D("audio/power6.mp3", false);
+			SoundEngine->play2D("Resources/Audio/power6.mp3", false);
+
+			SoundEngine->stopAllSounds();
+			SoundEngine->play2D("Resources/Audio/bgmusic1.mp3", GL_TRUE);
 		}
 			
 	}
@@ -437,7 +443,10 @@ void Game::ResetLevel()
 {
 	if (this->Level == 0)this->Levels[0].Load("Resources/Levels/LevelOne", this->Width, this->Height * 0.5f);
 	else if (this->Level == 1)
-		this->Levels[1].Load("Resources/Levels/LevelTwo", this->Width, this->Height * 0.5f);	
+		this->Levels[1].Load("Resources/Levels/LevelTwo", this->Width, this->Height * 0.5f);
+
+	SoundEngine->stopAllSounds();
+	SoundEngine->play2D("Resources/Audio/bgmusic.mp3", GL_TRUE);
 
 	this->Lives = 3;
 }
@@ -453,6 +462,9 @@ void Game::ResetPlayer()
 	Ballobj->PassThrough = Ballobj->Sticky = GL_FALSE;
 	Player->Color = glm::vec3(1.0f);
 	Ballobj->Color = glm::vec3(1.0f);
+
+	SoundEngine->stopAllSounds();
+	SoundEngine->play2D("Resources/Audio/bgmusic.mp3", GL_TRUE);
 }
 
 
