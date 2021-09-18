@@ -1,5 +1,5 @@
-# OpenGL Breakout for College Project
-This project is complted using tutorials from [LearnOpenGL](https://learnopengl.com/In-Practice/2D-Game/Breakout).
+# OpenGL Breakout
+This was completed for college degree and was done using tutorials from [LearnOpenGL](https://learnopengl.com/In-Practice/2D-Game/Breakout).
 
 The project consists of :
 - Creating Window
