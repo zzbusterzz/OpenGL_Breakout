@@ -8,7 +8,7 @@
 #include <glad/glad.h>
 
 #include "texture.h"
-#include "Source/Shader.h"
+#include "../Source/Shader.h"
 
 
 // A static singleton ResourceManager class that hosts several

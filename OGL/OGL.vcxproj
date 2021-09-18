@@ -84,8 +84,8 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);D:\OGL\OGL\OGL\Include;$(IncludePath)</IncludePath>
-    <LibraryPath>D:\OGL\OGL\OGL\Lib;$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64);$(NETFXKitsDir)Lib\um\x64</LibraryPath>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(ProjectDir)\Include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(ProjectDir)\Lib;$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64);$(NETFXKitsDir)Lib\um\x64</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -149,38 +149,38 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Ball.cpp" />
-    <ClCompile Include="Game.cpp" />
-    <ClCompile Include="GameLevel.cpp" />
-    <ClCompile Include="GameObject.cpp" />
-    <ClCompile Include="ParticleGenerator.cpp" />
-    <ClCompile Include="PostProcess.cpp" />
-    <ClCompile Include="Resource_manager.cpp" />
+    <ClCompile Include="Source\Ball.cpp" />
+    <ClCompile Include="Source\Game.cpp" />
+    <ClCompile Include="Source\GameLevel.cpp" />
+    <ClCompile Include="Source\GameObject.cpp" />
     <ClCompile Include="Source\glad.c" />
     <ClCompile Include="Source\main.cpp" />
+    <ClCompile Include="Source\ParticleGenerator.cpp" />
+    <ClCompile Include="Source\PostProcess.cpp" />
+    <ClCompile Include="Source\Resource_manager.cpp" />
     <ClCompile Include="Source\Shader.cpp" />
-    <ClCompile Include="SpriteRenderer.cpp" />
-    <ClCompile Include="TextRenderer.cpp" />
-    <ClCompile Include="Texture.cpp" />
+    <ClCompile Include="Source\SpriteRenderer.cpp" />
+    <ClCompile Include="Source\TextRenderer.cpp" />
+    <ClCompile Include="Source\Texture.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Ball.h" />
-    <ClInclude Include="Game.h" />
-    <ClInclude Include="GameLevel.h" />
-    <ClInclude Include="GameObject.h" />
     <ClInclude Include="Include\glad\glad.h" />
     <ClInclude Include="Include\GLFW\glfw3.h" />
     <ClInclude Include="Include\KHR\khrplatform.h" />
     <ClInclude Include="Include\stb_image.h" />
-    <ClInclude Include="ParticleGenerator.h" />
-    <ClInclude Include="PostProcess.h" />
-    <ClInclude Include="Powerup.h" />
-    <ClInclude Include="Resource_manager.h" />
+    <ClInclude Include="Source\Ball.h" />
+    <ClInclude Include="Source\Game.h" />
+    <ClInclude Include="Source\GameLevel.h" />
+    <ClInclude Include="Source\GameObject.h" />
     <ClInclude Include="Source\main.h" />
+    <ClInclude Include="Source\ParticleGenerator.h" />
+    <ClInclude Include="Source\PostProcess.h" />
+    <ClInclude Include="Source\Powerup.h" />
+    <ClInclude Include="Source\Resource_manager.h" />
     <ClInclude Include="Source\Shader.h" />
-    <ClInclude Include="SpriteRenderer.h" />
-    <ClInclude Include="TextRenderer.h" />
-    <ClInclude Include="Texture.h" />
+    <ClInclude Include="Source\SpriteRenderer.h" />
+    <ClInclude Include="Source\TextRenderer.h" />
+    <ClInclude Include="Source\Texture.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Levels\LevelOne" />

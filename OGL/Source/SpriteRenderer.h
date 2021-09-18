@@ -6,7 +6,7 @@
 #include <glm/glm.hpp>
 
 #include "Texture.h"
-#include "Source/Shader.h"
+#include "../Source/Shader.h"
 
 class SpriteRenderer
 {

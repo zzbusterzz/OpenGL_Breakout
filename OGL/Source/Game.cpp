@@ -6,7 +6,7 @@
 #include "PostProcess.h"
 #include "Powerup.h"
 #include <algorithm>
-#include <TextRenderer.h>
+#include "TextRenderer.h"
 #include <sstream>
 
 GameObject* Player;

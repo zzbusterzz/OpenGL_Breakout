@@ -5,7 +5,7 @@
 #include <glad/glad.h>
 #include <glm/glm.hpp>
 
-#include "Source/Shader.h"
+#include "../Source/Shader.h"
 #include "texture.h"
 #include "GameObject.h"
 

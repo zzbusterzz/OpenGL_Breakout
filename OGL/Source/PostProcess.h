@@ -1,6 +1,6 @@
 #pragma once
 #include <glad/glad.h>
-#include "Source/Shader.h"
+#include "../Source/Shader.h"
 #include "Texture.h"
 
 class PostProcess

@@ -3,7 +3,7 @@
 #pragma comment(lib, "glfw3.lib")
 #include <iostream>
 
-#include "../Game.h"
+#include "Game.h"
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 // GLFW function declerations
