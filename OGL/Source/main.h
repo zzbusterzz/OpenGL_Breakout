@@ -1,5 +1,6 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
+#pragma comment(lib, "glfw3.lib")
 #include <iostream>
 
 #include "../Game.h"

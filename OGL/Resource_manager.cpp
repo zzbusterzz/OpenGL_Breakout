@@ -13,6 +13,7 @@
 #include <fstream>
 
 #include <stb_image.h>
+#pragma comment(lib, "stb_image.lib")
 
 // Instantiate static variables
 std::map<std::string, Texture2D*>    ResourceManager::Textures;

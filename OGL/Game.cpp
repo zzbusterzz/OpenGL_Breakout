@@ -17,7 +17,7 @@ PostProcess* Effects;
 GLfloat ShakeTime = 0.0f;
 TextRenderer* Text;
 
-const int TotalLevels = 2;
+const int TotalLevels = 3;
 const int MAX_LIVES = 3;
 
 ISoundEngine* SoundEngine = createIrrKlangDevice();
@@ -36,6 +36,7 @@ Game::~Game()
 	delete Particles;
 	delete Effects;
 	delete Text;
+	
 	SoundEngine->drop();
 }
 
@@ -87,9 +88,11 @@ void Game::Init()
 	// Load levels	
 	GameLevel one; one.Load("Resources/Levels/LevelOne", this->Width, this->Height * 0.5);
 	GameLevel two; two.Load("Resources/Levels/LevelTwo", this->Width, this->Height * 0.5);
+	GameLevel three; three.Load("Resources/Levels/LevelThree", this->Width, this->Height * 0.5);
 
 	this->Levels.push_back(one);
 	this->Levels.push_back(two);
+	this->Levels.push_back(three);
 	this->Level = 0;
 
 	glm::vec2 playerPos = glm::vec2(this->Width / 2 - PLAYER_SIZE.x / 2, this->Height - PLAYER_SIZE.y);
@@ -427,6 +430,16 @@ Direction Game::VectorDirection(glm::vec2 target)
 
 void Game::ProcessInput(GLfloat dt)
 {
+	if (this->State == GAME_ACTIVE || this->State == GAME_WIN || this->State == GAME_LOST) {
+		if (this->Keys[GLFW_KEY_M] && !this->KeysProcessed[GLFW_KEY_M])
+		{
+			if (SoundEngine->getSoundVolume() == 0)
+				SoundEngine->setSoundVolume(1);
+			else
+				SoundEngine->setSoundVolume(0);
+		}
+	}
+
 	if (this->State == GAME_ACTIVE)
 	{
 		GLfloat velocity = PLAYER_VELOCITY * dt;
